@@ -133,21 +133,15 @@ namespace Polling.Controllers
 
             int jumDiv = await _context.Divisions.CountAsync();
             int[] divisi = new int[jumDiv];
-            int[] var = new int[jumDiv];
             var divisis = await _context.Divisions.ToListAsync();
             double[] voteChoice = new double[(int)(double)jumDiv];
-            var divisiId = await _context.Divisions.ToListAsync();
             Dictionary<int, Dictionary<int, double>> votesAllDivision = new Dictionary<int, Dictionary<int, double>>();
             Dictionary<int, double> voteAllChoice = new Dictionary<int, double>();
             Dictionary<int, double> persenVote = new Dictionary<int, double>();
             
             
-
             foreach (var div in divisis)
             {
-                int[] votePerDivisi = new int[choices.Count()];
-                
-                List<int> votePerDivisiList = new List<int>();
                 Dictionary<int, int> votePerDivisiDictionary = new Dictionary<int, int>();
                 foreach (var choice in choices)
                 {
@@ -162,9 +156,7 @@ namespace Polling.Controllers
                 var point = filter.Select(di =>
                             new KeyValuePair<int, double>(di.Key, max != 0 ? 1.0/filter.Count() : 0.0)).ToDictionary(x => x.Key, x => x.Value);
 
-
                 votesAllDivision.Add(div.Id, point);
-                
             }
 
             foreach (var item in votesAllDivision)
@@ -188,7 +180,6 @@ namespace Polling.Controllers
 
                 }
                 Console.WriteLine(item.Key);
-                
             }
 
             var jumlah = 0.0;
@@ -196,7 +187,6 @@ namespace Polling.Controllers
             {
                var allVote = await _context.Votes.CountAsync();
                 jumlah += item.Value;
-                
             }
 
             foreach(var item in voteAllChoice)

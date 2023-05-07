@@ -31,12 +31,21 @@ namespace Polling.Controllers
         public ActionResult<string> GetMe()
         {
             var userName = _userService.GetMyName();
-            return Ok(userName);
+            return Ok(new
+            {
+                Username = userName
+            });
+            //return Ok(userName);
         }
+
+        /*
+         
+         */
 
         [HttpPost("Login")]
         public async Task<ActionResult<User>> Login(LoginDto request)
         {
+
             var user = await _context.Users.Where(u => u.Username == request.Username).FirstOrDefaultAsync();
             if (user == null)
             {
@@ -51,7 +60,10 @@ namespace Polling.Controllers
                 var token = CreateToken(user);
                 user.Token = token;
                 await _context.SaveChangesAsync();
-                return Ok(token);    
+                return Ok(new
+                {
+                    Token = token
+                });  
             }
         }
 
@@ -99,7 +111,11 @@ namespace Polling.Controllers
             {
                 user.Password = request.NewPassword;
                 await _context.SaveChangesAsync();
-                return Ok(user);
+                return Ok(new
+                {
+                    User = user
+                });
+                //return Ok(user);
             }
             
         }

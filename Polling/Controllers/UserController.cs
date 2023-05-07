@@ -21,13 +21,25 @@ namespace Polling.Controllers
             _configuration = configuration;
         }
 
-        // GET api/User/{id}
-        [HttpGet, Authorize(Roles = "Admin")]   
-        public async Task<ActionResult<List<User>>> Get(int userId)
+        [HttpGet]
+        public async Task<ActionResult<List<User>>> GetAllUser()
         {
-            var user = await _context.Users.Where(u => u.Id == userId).ToListAsync();
+            //return Ok(new
+            //{
+              //  Users = 5
+            //});
+            return Ok( new {
+                Users = await _context.Users.ToListAsync()
+            });
+        }
 
-            if (user.Count == 0)
+        // GET api/User/{id}
+        [HttpGet("{id}")]   
+        public async Task<ActionResult<List<User>>> Get(int id)
+        {
+            var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+
+            if (user == null)
             {
                 return NotFound();
             }
